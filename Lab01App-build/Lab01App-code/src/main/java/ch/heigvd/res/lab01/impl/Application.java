@@ -29,6 +29,8 @@ public class Application implements IApplication {
    */
   public static String WORKSPACE_DIRECTORY = "./workspace/quotes";
   
+  public static int n;
+  
   private static final Logger LOG = Logger.getLogger(Application.class.getName());
   
   public static void main(String[] args) {
@@ -92,6 +94,9 @@ public class Application implements IApplication {
        * one method provided by this class, which is responsible for storing the content of the
        * quote in a text file (and for generating the directories based on the tags).
        */
+      storeQuote(quote, WORKSPACE_DIRECTORY);
+      ++n;
+      
       LOG.info(quote.getSource());
       for (String tag : quote.getTags()) {
         LOG.info("> " + tag);
@@ -125,7 +130,30 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+     File tmp;
+     
+     String[] tags = quote.getTags();
+     for(int i = 0; i < tags.length; ++i) {
+        filename += "/"; 
+        filename += tags[i];
+     }
+     
+     // Créeation de l'arborescence
+     tmp = new File(filename);
+     tmp.mkdirs();
+     
+     filename += "/quote-" + n + ".utf8";
+     
+     // Création du fichier qui contiendra les quotes
+     File file = new File(filename);
+     Writer writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+     
+     // Ecriture des quotes dans le fichiers précédemment créé
+     writer.write(quote.getQuote());
+     
+     // Fermeture du fichier
+     writer.close();
   }
   
   /**
@@ -142,13 +170,20 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
+         try {
+            writer.write(file.getPath());
+         }
+         catch (IOException e) {
+            System.out.println("IOException a été levée");
+         }
       }
     });
   }
   
   @Override
   public String getAuthorEmail() {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+     return "sebastien.henneberger@heig-vd.ch";
   }
 
   @Override
