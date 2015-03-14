@@ -17,32 +17,6 @@ public class DFSFileExplorer implements IFileExplorer {
   @Override
   public void explore(File rootDirectory, IFileVisitor vistor) {
      //throw new UnsupportedOperationException("The student has not implemented this method yet.");
-     
-     /*
-     // Premièrment, on visite l'objet passé en paramètre (fichier ou répertoire)
-     vistor.visit(rootDirectory);
-     // S'il s'agit d'un répertoire alors on récupère les noms des objets contenus dans ce repertoire
-     // S'il s'agit d'un dossier alors vaudra null
-     File[] nomObjets = rootDirectory.listFiles();
-     
-     // S'il s'agit d'un répertoire
-     if (nomObjets != null) {
-    
-        // On visite tous les fichiers trouvés
-        for(int i = 0; i < nomObjets.length; ++i) {
-           if (nomObjets[i].isFile()) {
-              vistor.visit(nomObjets[i]);
-           }
-           
-           // Sinon on réappelle la méthode explore afin d'entrer dans les répertoires
-           else {
-               explore(nomObjets[i], vistor);
-           }
-           
-        }
-       
-    }
-    */
 
      // Premièrment, on visite l'objet passé en paramètre (fichier ou répertoire)
      vistor.visit(rootDirectory);
@@ -59,7 +33,6 @@ public class DFSFileExplorer implements IFileExplorer {
            }
         }
         
-        // On visite tous les fichiers trouvés
         for(int i = 0; i < nomObjets.length; ++i) {
            if (nomObjets[i].isDirectory()) {
               explore(nomObjets[i], vistor);

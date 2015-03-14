@@ -13,7 +13,7 @@ import java.io.Writer;
  */
 public class CompleteFileTransformer extends FileTransformer {
 
-  @Override
+  //@Override
   public Writer decorateWithFilters(Writer writer) {
      /*  
      if (true) {

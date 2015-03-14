@@ -172,6 +172,7 @@ public class Application implements IApplication {
          */
          try {
             writer.write(file.getPath());
+            writer.write("\n");
          }
          catch (IOException e) {
             System.out.println("IOException a été levée");
