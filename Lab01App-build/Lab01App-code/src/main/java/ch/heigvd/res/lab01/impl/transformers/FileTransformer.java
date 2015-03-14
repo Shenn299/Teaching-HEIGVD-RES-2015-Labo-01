@@ -75,27 +75,7 @@ public abstract class FileTransformer implements IFileVisitor {
       } catch (IOException ex) {
          LOG.log(Level.SEVERE, null, ex);
       }
-   }
-
-   public class UpperCaseFilterWriter {
-
-      public UpperCaseFilterWriter(Writer writer) {
-         try {
-            writer.write(writer.toString().toUpperCase());
-         } catch (IOException e) {
-            System.out.println("IOException a été levée");
-         }
-      }
-
+      
    }
    
-   public class FileNumberingFilterWriter {
-      
-      public FileNumberingFilterWriter(UpperCaseFilterWriter ucfw) {
-         //Writer writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
-      }
-      
-   
-   }
-
 }
