@@ -21,6 +21,8 @@ public class FileNumberingFilterWriter extends FilterWriter {
   
   private int numeroLigne = 1;
   private boolean debutLigne = true;
+  // \r détecté (pour le \r\n de windows)
+  private boolean r = false;
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
@@ -40,18 +42,19 @@ public class FileNumberingFilterWriter extends FilterWriter {
            out.write(numeroLigne + "\t");
            debutLigne = false;
         }
+        
+        out.write(tab[i]);
      
         // Si le caractère est un retour à la ligne
-        if (tab[i] == '\n') {
-           // On passe à la ligne suivante
-           out.write(tab[i]);
+        if (tab[i] == '\n' || tab[i] == '\r') {
+           if (tab[i] == '\r' && tab[i+1] == '\n') {
+              out.write(tab[i+1]);
+              ++i;              
+           }
+           
            ++numeroLigne;
            out.write(numeroLigne + "\t");
            debutLigne = false;
-        }
-        else {
-           // Sinon on écrit le caractère
-           out.write(tab[i]);
         }
      }
   }
@@ -60,9 +63,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
   public void write(char[] cbuf, int off, int len) throws IOException {
      //throw new UnsupportedOperationException("The student has not implemented this method yet.");
      
-     char c;
      for(int i = off; i < off + len; ++i) {
-        c = cbuf[i];
         
         // Si on est en début de ligne
         if (debutLigne) {
@@ -70,18 +71,19 @@ public class FileNumberingFilterWriter extends FilterWriter {
            out.write(numeroLigne + "\t");
            debutLigne = false;
         }
+        
+        out.write(cbuf[i]);
      
         // Si le caractère est un retour à la ligne
-        if (c == '\n') {
-           // On passe à la ligne suivante
-           out.write(c);
+        if (cbuf[i] == '\n' || cbuf[i] == '\r') {
+           if (cbuf[i] == '\r' && cbuf[i+1] == '\n' ) {
+              out.write(cbuf[i+1]);
+              ++i;              
+           }
+           
            ++numeroLigne;
            out.write(numeroLigne + "\t");
            debutLigne = false;
-        }
-        else {
-           // Sinon on écrit le caractère
-           out.write(c);
         }
      }
   }
@@ -89,6 +91,23 @@ public class FileNumberingFilterWriter extends FilterWriter {
   @Override
   public void write(int c) throws IOException {
      //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+     
+     if (r == true) {
+        r = false;
+        
+        if (c == '\n') {
+           out.write("\r");
+           out.write("\n");
+           ++numeroLigne;
+           out.write(numeroLigne + "\t");
+      
+           return;
+        }
+        else {
+           out.write("\r" + c);
+           return;
+        }
+     }
      
      // Si on est en début de ligne
      if (debutLigne) {
@@ -98,17 +117,19 @@ public class FileNumberingFilterWriter extends FilterWriter {
      }
      
      // Si le caractère est un retour à la ligne
-     if (c == '\n') {
-        // On passe à la ligne suivante
+     if (c == '\n' && r == false) {
         out.write(c);
         ++numeroLigne;
-        out.write(numeroLigne + "\t");
-        debutLigne = false;
+        out.write(numeroLigne + "\t");        
+        return;
      }
-     else {
-        // Sinon on écrit le caractère
-        out.write(c);
+     
+     if (c == '\r') {
+        r = true;
+        return;
      }
+     
+     out.write(c);
      
   }
 
