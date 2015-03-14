@@ -18,6 +18,9 @@ import java.util.logging.Logger;
 public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
+  
+  private int numeroLigne = 1;
+  private boolean debutLigne = true;
 
   public FileNumberingFilterWriter(Writer out) {
     super(out);
@@ -25,17 +28,88 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+     
+     char[] tab = str.substring(off, off + len).toCharArray();
+
+     for(int i = 0; i < tab.length; ++i) {
+        
+        // Si on est en début de ligne
+        if (debutLigne) {
+           // On écrit le numéro de la ligne suivi d'un tab
+           out.write(numeroLigne + "\t");
+           debutLigne = false;
+        }
+     
+        // Si le caractère est un retour à la ligne
+        if (tab[i] == '\n') {
+           // On passe à la ligne suivante
+           out.write(tab[i]);
+           ++numeroLigne;
+           out.write(numeroLigne + "\t");
+           debutLigne = false;
+        }
+        else {
+           // Sinon on écrit le caractère
+           out.write(tab[i]);
+        }
+     }
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+     
+     char c;
+     for(int i = off; i < off + len; ++i) {
+        c = cbuf[i];
+        
+        // Si on est en début de ligne
+        if (debutLigne) {
+           // On écrit le numéro de la ligne suivi d'un tab
+           out.write(numeroLigne + "\t");
+           debutLigne = false;
+        }
+     
+        // Si le caractère est un retour à la ligne
+        if (c == '\n') {
+           // On passe à la ligne suivante
+           out.write(c);
+           ++numeroLigne;
+           out.write(numeroLigne + "\t");
+           debutLigne = false;
+        }
+        else {
+           // Sinon on écrit le caractère
+           out.write(c);
+        }
+     }
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+     
+     // Si on est en début de ligne
+     if (debutLigne) {
+        // On écrit le numéro de la ligne suivi d'un tab
+        out.write(numeroLigne + "\t");
+        debutLigne = false;
+     }
+     
+     // Si le caractère est un retour à la ligne
+     if (c == '\n') {
+        // On passe à la ligne suivante
+        out.write(c);
+        ++numeroLigne;
+        out.write(numeroLigne + "\t");
+        debutLigne = false;
+     }
+     else {
+        // Sinon on écrit le caractère
+        out.write(c);
+     }
+     
   }
 
 }
