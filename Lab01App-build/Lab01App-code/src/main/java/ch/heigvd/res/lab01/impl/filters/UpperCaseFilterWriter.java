@@ -27,11 +27,14 @@ public class UpperCaseFilterWriter extends FilterWriter {
      //throw new UnsupportedOperationException("The student has not implemented this method yet.");
      
      char[] tmp = new char[len];
+     
      int j = 0;
      for(int i = off; i < off + len; ++i) {
+        // Mise en majuscule du char
         tmp[j] = Character.toUpperCase(cbuf[i]);
         ++j;
      }
+     // Ecriture du char
      out.write(tmp);
   }
 

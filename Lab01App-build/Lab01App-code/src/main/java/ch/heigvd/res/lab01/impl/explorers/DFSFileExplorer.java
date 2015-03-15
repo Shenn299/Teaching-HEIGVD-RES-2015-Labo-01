@@ -20,6 +20,7 @@ public class DFSFileExplorer implements IFileExplorer {
 
      // Premièrment, on visite l'objet passé en paramètre (fichier ou répertoire)
      vistor.visit(rootDirectory);
+     
      // S'il s'agit d'un répertoire alors on récupère les noms des objets contenus dans ce repertoire
      // S'il s'agit d'un dossier alors vaudra null
      File[] nomObjets = rootDirectory.listFiles();
@@ -33,6 +34,8 @@ public class DFSFileExplorer implements IFileExplorer {
            }
         }
         
+        // Seulement après avoir visité les fichiers, on entre dans tous les répertoires trouvés
+        // (Cet ordre est nécessaire car la procédure de test l'utilise, il ne s'agit donc pas d'un vrai DFS)
         for(int i = 0; i < nomObjets.length; ++i) {
            if (nomObjets[i].isDirectory()) {
               explore(nomObjets[i], vistor);

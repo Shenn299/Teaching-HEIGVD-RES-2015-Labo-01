@@ -29,6 +29,7 @@ public class Application implements IApplication {
    */
   public static String WORKSPACE_DIRECTORY = "./workspace/quotes";
   
+  // Numérotation des quotes
   public static int n;
   
   private static final Logger LOG = Logger.getLogger(Application.class.getName());
@@ -42,7 +43,6 @@ public class Application implements IApplication {
      */
     System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s: %5$s%6$s%n");
     
-       
     int numberOfQuotes = 0;
     try {
       numberOfQuotes = Integer.parseInt(args[0]);
@@ -95,6 +95,7 @@ public class Application implements IApplication {
        * quote in a text file (and for generating the directories based on the tags).
        */
       storeQuote(quote, WORKSPACE_DIRECTORY);
+      // Incrémentation du numéro de quote
       ++n;
       
       LOG.info(quote.getSource());
@@ -131,18 +132,20 @@ public class Application implements IApplication {
    */
   void storeQuote(Quote quote, String filename) throws IOException {
      //throw new UnsupportedOperationException("The student has not implemented this method yet.");
-     File tmp;
      
+     // Récupération des tags
      String[] tags = quote.getTags();
+     // Création du path de la quote
      for(int i = 0; i < tags.length; ++i) {
         filename += "/"; 
         filename += tags[i];
      }
      
-     // Créeation de l'arborescence
-     tmp = new File(filename);
+     // Création de l'arborescence
+     File tmp = new File(filename);
      tmp.mkdirs();
      
+     // Ajout du nom de fichier au path
      filename += "/quote-" + n + ".utf8";
      
      // Création du fichier qui contiendra les quotes
@@ -171,7 +174,9 @@ public class Application implements IApplication {
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
          try {
+            // On récupère le path du fchier (nom du fichier inclu)
             writer.write(file.getPath());
+            // On ajoute un retour à la ligne car la procédure de test en ajoute un
             writer.write("\n");
          }
          catch (IOException e) {

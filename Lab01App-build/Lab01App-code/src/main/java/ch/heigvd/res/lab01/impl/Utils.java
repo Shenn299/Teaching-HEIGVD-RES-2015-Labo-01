@@ -22,7 +22,10 @@ public class Utils {
   public static String[] getNextLine(String lines) {
      //throw new UnsupportedOperationException("The student has not implemented this method yet.");
      
+     // Initialisation de l'indice qui détecte un séparateur
      int pos = -1;
+     
+     // On réupère dans pos l'indice du premier séparateur trouvé
      for(int i = 0; i < lines.length(); ++i) {
         if (lines.charAt(i) == '\n') {
            pos = i;
@@ -46,15 +49,20 @@ public class Utils {
      
      String[] res = new String[2];
      
+     // Si aucun séparateur n'a été trouvé
      if (pos == - 1) {
         res[0] = "";
         res[1] = lines;
      }
+     
+     // Sinon le premier élément contient une chaine suivi d'un séparateur
+     // Et le second élément contient le reste de la chaine
      else {
         res[0] = lines.substring(0, pos + 1);
         res[1] = lines.substring(pos + 1);
      }
      
+     // On retourne le tableau de string     
      return res;
      
   }
