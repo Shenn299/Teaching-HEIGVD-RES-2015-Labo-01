@@ -29,14 +29,18 @@ public class Utils {
            break;
         }
         else if (lines.charAt(i) == '\r') {
-           if (lines.charAt(i+1) == '\n') {
-              pos = i + 1;
-              break;
+           if (i != lines.length() - 1) {
+              if (lines.charAt(i+1) == '\n') {
+                 pos = i + 1;
+              }
+              else {
+                 pos = i;
+              }
            }
            else {
               pos = i;
-              break;
            }  
+           break;
         }     
      }
      

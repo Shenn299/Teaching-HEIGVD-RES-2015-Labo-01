@@ -104,8 +104,9 @@ public class FileNumberingFilterWriter extends FilterWriter {
            return;
         }
         else {
-           out.write("\r" + c);
-           return;
+           out.write("\r");
+           ++numeroLigne;
+           debutLigne = true;
         }
      }
      
